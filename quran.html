@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read Quran - Muslimworld</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Lateef:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+
+<body class="quran-reader-body">
+
+    <div class="container reader-container">
+        <div class="reader-top-nav">
+            <a href="surah-list.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+            <div class="surah-title-top" id="top-bar-title">Loading...</div>
+            <button class="settings-btn" id="open-settings"><i class="fa-solid fa-gear"></i></button>
+        </div>
+
+        <div class="surah-header-wrapper">
+            <div class="surah-header-main">
+                <div class="sh-left">
+                    <button class="sh-tab active">Translation</button>
+                    <button class="sh-tab">Tafseer</button>
+                </div>
+                <div class="sh-right">
+                    <div class="sh-icon-circle"><i class="fa-solid fa-kaaba"></i></div>
+                    <p id="ayah-count">Ayaat : ...</p>
+                </div>
+            </div>
+            <div id="bismillah-header" class="bismillah-text" style="display:none;">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ
+                ٱلرَّحِيمِ</div>
+            <div id="bismillah-translation" class="bismillah-trans" style="display:none;">In the name of Allah, the
+                Entirely Merciful, the Especially Merciful.</div>
+        </div>
+
+        <div id="loader" class="loader"><i class="fa-solid fa-circle-notch fa-spin"></i><br>Loading Content...</div>
+
+        <div id="ayahs-container" class="ayahs-container"></div>
+
+        <div class="audio-player">
+            <div class="player-controls">
+                <button id="prev-ayah"><i class="fa-solid fa-backward-step"></i></button>
+                <button id="play-pause" class="play-btn"><i class="fa-solid fa-play"></i></button>
+                <button id="next-ayah"><i class="fa-solid fa-forward-step"></i></button>
+            </div>
+            <div class="qari-info">
+                <p id="current-qari-name">Loading Qari...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="settings-modal">
+        <div class="settings-card">
+            <div class="settings-header">
+                <h3>Settings</h3>
+                <button id="close-settings"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="settings-section clickable-row" id="open-reciter-list-btn">
+                <div>
+                    <h4 style="color:#1f2937; margin-bottom:5px; font-weight:600;">Select Reciter</h4>
+                    <span id="settings-current-qari" style="font-size:0.85rem; color:#6b7280;">...</span>
+                </div>
+                <i class="fa-solid fa-chevron-right" style="color:#9ca3af;"></i>
+            </div>
+
+            <div class="settings-section clickable-row" id="open-translation-list-btn">
+                <div>
+                    <h4 style="color:#1f2937; margin-bottom:5px; font-weight:600;">Translation Language</h4>
+                    <span id="settings-current-translation" style="font-size:0.85rem; color:#6b7280;">...</span>
+                </div>
+                <i class="fa-solid fa-chevron-right" style="color:#9ca3af;"></i>
+            </div>
+
+            <div class="settings-section">
+                <h4 style="color:#559e70; font-size:1rem; margin-bottom:15px;">Show</h4>
+                <div class="toggle-row">
+                    <strong style="font-size: 0.95rem; color:#1f2937;">Arabic</strong>
+                    <label class="switch"><input type="checkbox" id="toggle-arabic"><span
+                            class="slider round"></span></label>
+                </div>
+                <div class="toggle-row"
+                    style="border-bottom: 1px solid #e5e7eb; padding-bottom: 10px; margin-bottom: 10px;">
+                    <strong style="font-size: 0.95rem; color:#1f2937;">Translation</strong>
+                    <label class="switch"><input type="checkbox" id="toggle-translation"><span
+                            class="slider round"></span></label>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h4 style="color:#559e70; font-size:1rem; margin-bottom:15px;">Font Setting</h4>
+                <div class="slider-box">
+                    <label>Arabic Font Size</label>
+                    <div class="slider-row">
+                        <span>A</span>
+                        <input type="range" id="arabic-font-slider" min="1.5" max="4.0" step="0.1" value="2.5">
+                        <span style="font-size:1.2rem; font-weight:bold;">A</span>
+                    </div>
+                </div>
+                <div class="slider-box">
+                    <label>Translation Font Size</label>
+                    <div class="slider-row">
+                        <span>A</span>
+                        <input type="range" id="translation-font-slider" min="0.8" max="2.0" step="0.1" value="1.0">
+                        <span style="font-size:1.2rem; font-weight:bold;">A</span>
+                    </div>
+                </div>
+            </div>
+            <button class="save-settings-btn" id="save-settings-btn">Save Changes</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="reciter-list-modal" style="z-index: 110;">
+        <div class="settings-card" style="height: 90vh; display: flex; flex-direction: column;">
+            <div class="settings-header">
+                <button id="close-reciter-list"><i class="fa-solid fa-arrow-left"></i></button>
+                <h3 style="flex:1; text-align:center; font-size:1.2rem;">Recitation</h3>
+                <div style="width:24px;"></div>
+            </div>
+            <div id="reciters-container" style="flex:1; overflow-y:auto; padding-bottom:20px;"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="translation-list-modal" style="z-index: 110;">
+        <div class="settings-card" style="height: 90vh; display: flex; flex-direction: column;">
+            <div class="settings-header">
+                <button id="close-translation-list"><i class="fa-solid fa-arrow-left"></i></button>
+                <h3 style="flex:1; text-align:center; font-size:1.2rem;">Translation</h3>
+                <div style="width:24px;"></div>
+            </div>
+            <div id="translations-container" style="flex:1; overflow-y:auto; padding-bottom:20px;"></div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

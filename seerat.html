@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seerat un Nabi - Muslimworld</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body style="background-color: #f3f4f6;">
+
+    <div class="container" style="min-height: 100vh; position: relative;">
+        <div class="list-top-bar" style="padding-bottom: 20px;">
+            <a href="index.html" style="color: white; cursor: pointer;" id="seerat-back-btn"><i
+                    class="fa-solid fa-arrow-left"></i></a>
+            <div class="title" style="color: white; font-weight: 600;">Seerat un Nabi</div>
+            <button style="color: white; background: none; border: none; font-size: 1.2rem;"><i
+                    class="fa-solid fa-star-and-crescent"></i></button>
+        </div>
+
+        <div id="seerat-list-view" style="padding: 20px;">
+            <div class="main-banner"
+                style="margin: 0 0 20px 0; background: linear-gradient(135deg, #378650, #22c55e); border: none;">
+                <div class="banner-text">
+                    <h2 style="color: white;">Life of the Prophet (ﷺ)</h2>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.85rem; margin-top: 5px;">Read chapters about
+                        the life, struggles, and victories of Muhammad (PBUH).</p>
+                </div>
+            </div>
+            <div id="seerat-chapters-container"></div>
+        </div>
+
+        <div id="seerat-reader-view"
+            style="display: none; padding: 20px; padding-bottom: 80px; background: white; min-height: 100vh;">
+            <h1 id="seerat-article-title"
+                style="color: var(--header-green); margin-bottom: 5px; font-size: 1.8rem; font-family: 'Amiri', serif;">
+                Title</h1>
+            <p
+                style="color: #6b7280; font-size: 0.85rem; margin-bottom: 25px; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px;">
+                Part <span id="seerat-article-part">X</span></p>
+            <div id="seerat-article-content" style="line-height: 1.8; color: #1f2937; font-size: 1.05rem;"></div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>
